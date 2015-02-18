@@ -49,9 +49,6 @@ public class ContactListActivity extends ActionBarActivity
                     .findFragmentById(R.id.contact_list))
                     .setActivateOnItemClick(true);
         }
-
-
-
     }
 
     /**
