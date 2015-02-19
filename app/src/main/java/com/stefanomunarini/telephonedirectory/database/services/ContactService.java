@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.stefanomunarini.telephonedirectory.bean.Contact;
 import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by Stefano on 2/18/15.
@@ -12,7 +15,7 @@ import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
 public class ContactService {
 
     private MyDBAdapter dbHelper;
-    protected ContactService(Context context){
+    public ContactService(Context context){
         dbHelper = new MyDBAdapter(context);
     }
 
@@ -52,17 +55,37 @@ public class ContactService {
     /**
      * Get single contact
      */
-    public Cursor getContact (int ID){
+    public Contact getContact (int ID){
         String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " WHERE " + MyDBAdapter.KEY_ID + "=" + ID + " ORDER BY " + MyDBAdapter.KEY_NAME + ", " + MyDBAdapter.KEY_SURNAME + ", " + MyDBAdapter.KEY_NUMBER;
-        return dbHelper.getCursor(query);
+        Cursor c = dbHelper.getCursor(query);
+        Contact contact = null;
+        while (c.moveToNext()) {
+            contact = new Contact(
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)));
+        }
+        return contact;
     }
 
     /**
      * Get all contacts
      */
-    public Cursor getAllContacts (){
+    public ArrayList<Contact> getAllContacts (){
         String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " ORDER BY " + MyDBAdapter.KEY_NAME + ", " + MyDBAdapter.KEY_SURNAME + ", " + MyDBAdapter.KEY_NUMBER;
-        return dbHelper.getCursor(query);
+        Cursor c = dbHelper.getCursor(query);
+        ArrayList<Contact> contactArrayList = new ArrayList<>();
+        if (c!=null){
+            while (c.moveToNext()){
+                Contact contact = new Contact((c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID))),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)));
+                contactArrayList.add(contact);
+            }
+        }
+        return contactArrayList;
     }
 
 

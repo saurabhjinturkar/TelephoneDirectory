@@ -30,13 +30,6 @@ public interface DBAdapterInterface {
     public boolean executeDeletion(int ID);
 
     /**
-     *  Delete a table
-     *  @Param: String TABLE_NAME
-     *  @Return: boolean
-     */
-    /*public boolean executeTableDeletion(String TABLE_NAME);*/
-
-    /**
      *  Get cursor
      *  @Param: String query
      *  @Return: Cursor

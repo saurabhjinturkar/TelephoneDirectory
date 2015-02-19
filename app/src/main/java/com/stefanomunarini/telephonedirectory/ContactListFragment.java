@@ -1,15 +1,24 @@
 package com.stefanomunarini.telephonedirectory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
-
+import android.widget.Toast;
 
 import com.stefanomunarini.telephonedirectory.Adapter.MyListAdapter;
-import com.stefanomunarini.telephonedirectory.dummy.DummyContent;
+import com.stefanomunarini.telephonedirectory.bean.Contact;
+import com.stefanomunarini.telephonedirectory.bean.ContactList;
+import com.stefanomunarini.telephonedirectory.database.services.ContactService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list fragment representing a list of Contacts. This fragment
@@ -21,6 +30,11 @@ import com.stefanomunarini.telephonedirectory.dummy.DummyContent;
  * interface.
  */
 public class ContactListFragment extends ListFragment {
+
+    public static ContactList contactList;
+    public static MyListAdapter myListAdapter;
+    private ContactService contactService;
+    private static Context context;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -72,8 +86,11 @@ public class ContactListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setListAdapter(new MyListAdapter(getActivity(), android.R.layout.two_line_list_item, DummyContent.ITEMS));
+        context = getActivity();
+        contactList = new ContactList(getActivity());
 
+        populateListView();
+        setListAdapter(myListAdapter);
     }
 
     @Override
@@ -81,10 +98,11 @@ public class ContactListFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Restore the previously serialized activated item position.
-        if (savedInstanceState != null
-                && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -113,7 +131,7 @@ public class ContactListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(contactList.get(position).getId());
     }
 
     @Override
@@ -145,5 +163,40 @@ public class ContactListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.option_menu_contact_list, menu);
+    }
+
+    /**
+     * La funzione associa un evento di tipo "ON-LONG-CLICK" ad ogni elemento della nostra listview
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int itemId = item.getItemId();
+        contactService = new ContactService(getActivity());
+        switch (itemId) {
+            case R.id.remove_contact:
+
+                contactList.remove(contactList.get((int)info.id));
+                contactService.deleteContact(itemId);
+                myListAdapter.notifyDataSetChanged();
+                populateListView();
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    public static void populateListView(){
+        myListAdapter = new MyListAdapter(context, android.R.layout.two_line_list_item, contactList);
     }
 }

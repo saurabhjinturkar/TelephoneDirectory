@@ -3,4 +3,18 @@
     <string name="action_settings">Settings</string>
     <string name="title_contact_list">Contacts</string>
     <string name="title_contact_detail">Contact Detail</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="number">Number</string>
+    <string name="plus">+</string>
+    <string name="save">Save</string>
+    <string name="name_is_null">Name field cannot be empty</string>
+    <string name="empty_field">All the fields must be filled</string>
+    <string name="incorrect_number">Insert a valid phone number</string>
+    <string name="modify">Modify</string>
+    <string name="edit">Edit</string>
+    <string name="title_new_contact">New Contact</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="contact_saved">Contact saved!</string>
+    <string name="remove">Remove</string>
 </resources>

@@ -1,5 +1,28 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/contact_detail"
-    style="?android:attr/textAppearanceLarge" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:padding="16dp" android:textIsSelectable="true"
-    tools:context="com.stefanomunarini.telephonedirectory.ContactDetailFragment" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.stefanomunarini.telephonedirectory.ContactDetailFragment"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+
+    <TextView
+        android:id="@+id/contact_name_surname"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textIsSelectable="true"/>
+
+    <TextView
+        android:id="@+id/contact_number"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_below="@id/contact_name_surname"
+        android:autoLink="all"
+        android:clickable="true"
+        android:linksClickable="true"
+        android:textIsSelectable="true"/>
+
+</RelativeLayout>

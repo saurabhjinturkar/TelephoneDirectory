@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.stefanomunarini.telephonedirectory" >
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,6 +25,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.stefanomunarini.telephonedirectory.ContactListActivity" />
+        </activity>
+        <activity
+            android:name=".NewContact"
+            android:label="@string/title_new_contact"
+            android:windowSoftInputMode="stateVisible"
+            android:parentActivityName=".ContactDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.stefanomunarini.telephonedirectory.ContactDetailActivity" />
         </activity>
     </application>
 

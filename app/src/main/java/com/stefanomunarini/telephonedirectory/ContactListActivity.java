@@ -1,9 +1,12 @@
 package com.stefanomunarini.telephonedirectory;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+
+import com.melnykov.fab.FloatingActionButton;
 
 
 /**
@@ -23,7 +26,7 @@ import android.support.v7.app.ActionBarActivity;
  * to listen for item selections.
  */
 public class ContactListActivity extends ActionBarActivity
-        implements ContactListFragment.Callbacks {
+        implements ContactListFragment.Callbacks, View.OnClickListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -31,10 +34,19 @@ public class ContactListActivity extends ActionBarActivity
      */
     private boolean mTwoPane;
 
+    /**
+     * Floating button (used to add an entry)
+     */
+    FloatingActionButton fab;
+
+    public static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
+
+        context = this;
 
         if (findViewById(R.id.contact_detail_container) != null) {
             // The detail container view will be present only in the
@@ -49,6 +61,9 @@ public class ContactListActivity extends ActionBarActivity
                     .findFragmentById(R.id.contact_list))
                     .setActivateOnItemClick(true);
         }
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
     }
 
     /**
@@ -62,7 +77,9 @@ public class ContactListActivity extends ActionBarActivity
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
+            //arguments.putSerializable("contact", DummyContact.CONTACTS.get(realPosition));
             arguments.putString(ContactDetailFragment.ARG_ITEM_ID, id);
+
             ContactDetailFragment fragment = new ContactDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -73,8 +90,22 @@ public class ContactListActivity extends ActionBarActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, ContactDetailActivity.class);
+            //detailIntent.putExtra("contact", DummyContact.CONTACTS.get(realPosition));
             detailIntent.putExtra(ContactDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.fab:
+                Intent intent = new Intent(this, NewContact.class);
+                startActivity(intent);
+                finish();
+                break;
+            default: break;
         }
     }
 }

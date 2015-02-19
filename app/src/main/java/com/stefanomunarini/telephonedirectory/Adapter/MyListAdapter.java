@@ -7,21 +7,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.stefanomunarini.telephonedirectory.dummy.DummyContent;
+import com.stefanomunarini.telephonedirectory.bean.Contact;
 
 import java.util.List;
 
 /**
  * Created by Stefano on 2/18/15.
  */
-public class MyListAdapter extends ArrayAdapter<DummyContent.Contact> {
+public class MyListAdapter extends ArrayAdapter<Contact> {
 
     private Context context;
+    private List<Contact> items;
 
-    public MyListAdapter(Context context, int textViewResourceId, List<DummyContent.Contact> items) {
+    public MyListAdapter(Context context, int textViewResourceId, List<Contact> items) {
         super(context, textViewResourceId, items);
 
         this.context = context;
+        this.items = items;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -31,7 +33,7 @@ public class MyListAdapter extends ArrayAdapter<DummyContent.Contact> {
             view = inflater.inflate(android.R.layout.two_line_list_item, null);
         }
 
-        DummyContent.Contact item = getItem(position);
+        Contact item = getItem(position);
         if (item!= null) {
 
             TextView nameSurnameView = (TextView) view.findViewById(android.R.id.text1);
@@ -41,11 +43,11 @@ public class MyListAdapter extends ArrayAdapter<DummyContent.Contact> {
             numberView.setPadding(16,16,16,16);
 
             if (nameSurnameView != null) {
-                nameSurnameView.setText(item.name + " " + item.surname);
+                nameSurnameView.setText(item.getName() + " " + item.getSurname());
             }
 
             if (numberView != null) {
-                numberView.setText(item.number);
+                numberView.setText(item.getNumber());
             }
         }
 

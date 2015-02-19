@@ -3,8 +3,10 @@ package com.stefanomunarini.telephonedirectory;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
 import android.view.MenuItem;
+
+import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
+import com.stefanomunarini.telephonedirectory.database.services.ContactService;
 
 
 /**
@@ -18,6 +20,8 @@ import android.view.MenuItem;
  */
 public class ContactDetailActivity extends ActionBarActivity {
 
+    private ContactService contactService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +29,8 @@ public class ContactDetailActivity extends ActionBarActivity {
 
         // Show the Up button in the action bar.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        contactService = new ContactService(this);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -40,7 +46,7 @@ public class ContactDetailActivity extends ActionBarActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putString(ContactDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ContactDetailFragment.ARG_ITEM_ID));
+                    contactService.getContact(Integer.parseInt(getIntent().getStringExtra(ContactDetailFragment.ARG_ITEM_ID))).getId());
             ContactDetailFragment fragment = new ContactDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -49,19 +55,33 @@ public class ContactDetailActivity extends ActionBarActivity {
         }
     }
 
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_contact_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, ContactListActivity.class));
-            return true;
+        switch (id) {
+            case android.R.id.home:
+                // This ID represents the Home or Up button. In the case of this
+                // activity, the Up button is shown. For
+                // more details, see the Navigation pattern on Android Design:
+                //
+                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+                //
+                navigateUpTo(new Intent(this, ContactListActivity.class));
+                return true;
+            case R.id.action_edit:
+                Intent intent = new Intent(this, NewContact.class);
+                intent.putExtra(MyDBAdapter.KEY_ID, ContactDetailFragment.mContact.getId());
+                startActivity(intent);
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

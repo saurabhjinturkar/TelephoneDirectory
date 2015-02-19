@@ -123,6 +123,8 @@ public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface 
 
     @Override
     public Cursor getCursor(String query) {
-        return null;
+        open();
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor;
     }
 }
