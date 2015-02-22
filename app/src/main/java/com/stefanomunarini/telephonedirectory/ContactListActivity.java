@@ -4,14 +4,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.SearchView;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -117,29 +115,39 @@ public class ContactListActivity extends ActionBarActivity
         }
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_contact_list, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search_item);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search_item).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
         if (searchView != null) {
             searchView.setOnQueryTextListener(this);
         }
 
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onQueryTextSubmit(String s) {
+        Log.d("Filter_Contact", "onQueryTextSubmit.. " + s);
         ContactListFragment.myListAdapter.getFilter().filter(s.toString());
+        ContactListFragment.myListAdapter.notifyDataSetChanged();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String s) {
-        ContactListFragment.myListAdapter.getFilter().filter(s);
+        Log.d("Filter_Contact", "onQueryTextChange.. " + s);
+        ContactListFragment.myListAdapter.getFilter().filter(s.toString());
+        ContactListFragment.myListAdapter.notifyDataSetChanged();
         return false;
     }
 }

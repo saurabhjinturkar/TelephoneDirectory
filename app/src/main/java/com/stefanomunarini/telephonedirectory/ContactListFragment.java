@@ -5,7 +5,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.widget.SearchView;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.stefanomunarini.telephonedirectory.Adapter.MyListAdapter;
 import com.stefanomunarini.telephonedirectory.bean.ContactList;
@@ -83,11 +83,13 @@ public class ContactListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
+
         context = getActivity();
         contactList = new ContactList(getActivity());
 
-        populateListView();
+        populateListView(contactList);
     }
 
     @Override
@@ -179,7 +181,7 @@ public class ContactListFragment extends ListFragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int itemId = item.getItemId();
-        contactService = new ContactService(getActivity());
+        //contactService = new ContactService(getActivity());
         switch (itemId) {
             /*case R.id.remove_contact:
 
@@ -194,8 +196,36 @@ public class ContactListFragment extends ListFragment {
         }
     }
 
-    private void populateListView(){
+    private void populateListView(ContactList contactList){
         myListAdapter = new MyListAdapter(context, android.R.layout.two_line_list_item, contactList);
         setListAdapter(myListAdapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,  MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuInflater inflaterr = getActivity().getMenuInflater();
+        inflaterr.inflate(R.menu.menu_contact_list, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_item).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+//                adapter.getFilter().filter(s.toString());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                myListAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
     }
 }

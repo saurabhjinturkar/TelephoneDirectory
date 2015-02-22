@@ -10,7 +10,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.stefanomunarini.telephonedirectory.ContactListFragment;
 import com.stefanomunarini.telephonedirectory.bean.Contact;
+import com.stefanomunarini.telephonedirectory.bean.ContactList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,8 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
         if (contact_filter == null)
             contact_filter = new Contact_Filter(contactList);
 
+        Log.d("Filter_Contact", "getFilter");
+
         return contact_filter;
     }
 
@@ -80,8 +84,8 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
          * Constructor
          * @param: clinicalFolder
          */
-        public Contact_Filter(List<Contact> clinicalFolder){
-            this.mContact = clinicalFolder;
+        public Contact_Filter(List<Contact> contacts){
+            this.mContact = contacts;
         }
 
         @Override
@@ -90,21 +94,27 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
 
             Log.d("Filter_Contact", "Finding... " + constraint);
 
+            ContactList contactList1;
             if (constraint == null || constraint.length() == 0) {
+                Log.d("Filter_Contact", "constraint == null || constraint.length() == 0... ");
+                Log.d("Filter_Contact", "mContact size... " + mContact.size());
+                contactList1 = new ContactList(getContext());
                 // Don't do filter, because the search word is null
-                results.values = mContact;
-                results.count = mContact.size();
+                results.values = contactList1;
+                results.count = contactList1.size();
             } else {
+                contactList1 = new ContactList(getContext());
                 // We perform filtering operation
-                ArrayList<Contact> mContactList = new ArrayList<Contact>();
+                ContactList mContactList = new ContactList();
 
-                for (Contact contact : mContact) {
+                for (Contact contact : contactList1) {
 
                     String name = contact.getName().toUpperCase();
                     String surname = contact.getSurname().toUpperCase();
                     String number = contact.getNumber();
                     if (name.contains(constraint.toString().toUpperCase()) || surname.contains(constraint.toString().toUpperCase()) || number.contains(constraint.toString())) {
                         mContactList.add(contact);
+                        Log.d("Filter_Contact", "Found... " + contact.getName() + " " + contact.getSurname());
                     }
                 }
 
@@ -119,11 +129,13 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             // Now we have to inform the adapter about the new list filtered
             if (filterResults.count == 0) {
+                //ContactListFragment.contactList = new ContactList(getContext());
                 notifyDataSetInvalidated();
                 Log.d("Filter_Contact","notifyDataSetInvalidated");
             }
             else {
-                contactList = (ArrayList<Contact>) filterResults.values;
+                ContactListFragment.contactList.clear();
+                ContactListFragment.contactList.addAll((ContactList) filterResults.values);
                 Log.d("Filter_Contact", "notifyDataSetChanged");
                 notifyDataSetChanged();
             }

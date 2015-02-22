@@ -13,6 +13,8 @@ public class ContactList extends ArrayList<Contact> {
 
     private ContactService contactService;
 
+    public ContactList(){}
+
     public ContactList(Context context){
         super();
         contactService = new ContactService(context);
