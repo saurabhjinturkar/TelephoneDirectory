@@ -90,11 +90,11 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
                 Intent intent = new Intent(getActivity(), NewContact.class);
                 intent.putExtra(MyDBAdapter.KEY_ID, ContactDetailFragment.mContact.getId());
                 startActivity(intent);
-            case R.id.action_remove:
+            /*case R.id.action_remove:
                 contactService = new ContactService(getActivity());
                 contactService.deleteContact(Integer.parseInt(mContact.getId()));
                 ContactListFragment.myListAdapter.notifyDataSetChanged();
-                ContactListFragment.populateListView();
+                ContactListFragment.populateListView();*/
         }
         return super.onOptionsItemSelected(item);
     }

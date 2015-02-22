@@ -1,10 +1,17 @@
 package com.stefanomunarini.telephonedirectory;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -26,7 +33,7 @@ import com.melnykov.fab.FloatingActionButton;
  * to listen for item selections.
  */
 public class ContactListActivity extends ActionBarActivity
-        implements ContactListFragment.Callbacks, View.OnClickListener {
+        implements ContactListFragment.Callbacks, View.OnClickListener, SearchView.OnQueryTextListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -40,6 +47,7 @@ public class ContactListActivity extends ActionBarActivity
     FloatingActionButton fab;
 
     public static Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,5 +115,31 @@ public class ContactListActivity extends ActionBarActivity
                 break;
             default: break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_contact_list, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(this);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        ContactListFragment.myListAdapter.getFilter().filter(s.toString());
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        ContactListFragment.myListAdapter.getFilter().filter(s);
+        return false;
     }
 }

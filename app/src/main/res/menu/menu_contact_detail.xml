@@ -6,8 +6,8 @@
         android:orderInCategory="100"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/action_remove"
+    <!--<item android:id="@+id/action_remove"
         android:title="@string/remove"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        app:showAsAction="always"/>-->
 </menu>

@@ -11,17 +11,15 @@
     android:showDividers="middle"
     tools:context="com.stefanomunarini.telephonedirectory.ContactListActivity">
 
-    <!--
-    This layout is a two-pane layout for the Contacts
-    master/detail flow.
-    
-    -->
-
+    <!-- This layout is a two-pane layout for the Contacts master/detail flow. -->
     <fragment android:id="@+id/contact_list"
         android:name="com.stefanomunarini.telephonedirectory.ContactListFragment"
-        android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         tools:layout="@android:layout/list_content" />
 
+    <!-- 'Add contact' floating button -->
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -34,7 +32,9 @@
         fab:fab_colorRipple="@color/ripple" />
 
 
-    <FrameLayout android:id="@+id/contact_detail_container" android:layout_width="0dp"
-        android:layout_height="match_parent" android:layout_weight="3" />
+    <FrameLayout android:id="@+id/contact_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
 
 </LinearLayout>

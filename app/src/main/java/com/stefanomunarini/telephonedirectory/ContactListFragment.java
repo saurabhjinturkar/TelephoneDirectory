@@ -1,24 +1,22 @@
 package com.stefanomunarini.telephonedirectory;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.widget.SearchView;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.stefanomunarini.telephonedirectory.Adapter.MyListAdapter;
-import com.stefanomunarini.telephonedirectory.bean.Contact;
 import com.stefanomunarini.telephonedirectory.bean.ContactList;
 import com.stefanomunarini.telephonedirectory.database.services.ContactService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A list fragment representing a list of Contacts. This fragment
@@ -85,12 +83,11 @@ public class ContactListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         context = getActivity();
         contactList = new ContactList(getActivity());
 
         populateListView();
-        setListAdapter(myListAdapter);
     }
 
     @Override
@@ -103,6 +100,7 @@ public class ContactListFragment extends ListFragment {
         }
 
         registerForContextMenu(getListView());
+        getListView().setTextFilterEnabled(true);
     }
 
     @Override
@@ -183,20 +181,21 @@ public class ContactListFragment extends ListFragment {
         int itemId = item.getItemId();
         contactService = new ContactService(getActivity());
         switch (itemId) {
-            case R.id.remove_contact:
+            /*case R.id.remove_contact:
 
                 contactList.remove(contactList.get((int)info.id));
                 contactService.deleteContact(itemId);
                 myListAdapter.notifyDataSetChanged();
                 populateListView();
-                return true;
+                return true;*/
 
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public static void populateListView(){
+    private void populateListView(){
         myListAdapter = new MyListAdapter(context, android.R.layout.two_line_list_item, contactList);
+        setListAdapter(myListAdapter);
     }
 }

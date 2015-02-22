@@ -36,5 +36,4 @@
                 android:value="com.stefanomunarini.telephonedirectory.ContactDetailActivity" />
         </activity>
     </application>
-
 </manifest>
