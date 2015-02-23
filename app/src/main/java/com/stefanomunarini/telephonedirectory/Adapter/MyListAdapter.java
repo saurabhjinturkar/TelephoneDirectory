@@ -73,17 +73,13 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
     }
 
     /*
-     * Class used to filter the Clinical Folder
+     * Class used to filter ContactList
      * based on user input in search bar
      */
     private class Contact_Filter extends Filter {
 
         private List<Contact> mContact;
 
-        /*
-         * Constructor
-         * @param: clinicalFolder
-         */
         public Contact_Filter(List<Contact> contacts){
             this.mContact = contacts;
         }

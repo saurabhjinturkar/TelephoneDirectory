@@ -15,10 +15,8 @@ import com.stefanomunarini.telephonedirectory.interfaces.DBAdapterInterface;
  */
 public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface {
 
-    private Context mContext;
     public MyDBAdapter(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA_VERSION);
-        this.mContext = context;
     }
 
     // Database instance
