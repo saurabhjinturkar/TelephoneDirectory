@@ -2,7 +2,7 @@
 
 <i><b>Installation instruction</b> (two ways):</i>
 
-<i>1) Copy the apk of the app in one of your mobile phone folder. Than launch the APK directly from the phone to install it.</i>
+<i>1) Copy the apk of the app (`TelephoneDirectory/app/app-release.apk`) in one of your mobile phone folder. Than launch the APK directly from the phone to install it.</i>
 
 <i>2) Open the project with Android Studio, connect your device to the computer and run it.</i>
 
