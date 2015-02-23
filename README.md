@@ -1,7 +1,15 @@
 # TelephoneDirectory
-TelephoneDirectory
 
-You have to build a mobile application that provides a simple telephone directory.
+<i><b>Installation instruction</b> (two ways):</i>
+
+<i>1) Copy the apk of the app in one of your mobile phone folder. Than launch the APK directly from the phone to install it.</i>
+
+<i>2) Open the project with Android Studio, connect your device to the computer and run it.</i>
+
+
+
+
+<h6>You have to build a mobile application that provides a simple telephone directory.</h6>
 
 <b>Technicalities</b>
 
@@ -19,21 +27,21 @@ The entries should be validated, so that it's not possible to enter an empty fir
 That is a "+" followed by a nonempty group of digits, a space, a nonempty group of digits, a space, a group of digits with at least 6 digits.
 
 The application consists of the following pages:
-
-1) <b>Home page</b>
+<ol>
+<li> <b>Home page</b> </li>
 
   Contains a text field that allows to search through all the entries by name or number. When I enter text in the      field, the page will be reloaded with a table containing all the entries that match the text I entered.
   The page contains a link to the "add new entry" page.
   When an entry is displayed, it contains a link to the "edit this entry" page.
 
-2) <b>Add new entry page</b>
+<li> <b>Add new entry page</b> </li>
 
   Contains a form for entering a new entry.
 
-3) <b>Edit entry page</b>
+<li> <b>Edit entry page</b> </li>
 
   Contains a form for modifying an existing entry.
 
-4*) <i>Extra activities (not mandatory)</i>
+<li> <i>Extra activities (not mandatory)</i> </li>
 
   Commit your code on github or any other SCM repository you prefer (e.g. bitbucket, gitlab, etc)
