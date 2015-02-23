@@ -115,6 +115,9 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
                     if (name.contains(constraint.toString().toUpperCase()) || surname.contains(constraint.toString().toUpperCase()) || number.contains(constraint.toString())) {
                         mContactList.add(contact);
                         Log.d("Filter_Contact", "Found... " + contact.getName() + " " + contact.getSurname());
+                    } else {
+                        mContactList.remove(contact);
+                        Log.d("Filter_Contact", "No matches found..Deleting contact from list..");
                     }
                 }
 
@@ -129,7 +132,7 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             // Now we have to inform the adapter about the new list filtered
             if (filterResults.count == 0) {
-                //ContactListFragment.contactList = new ContactList(getContext());
+                ContactListFragment.contactList.clear();
                 notifyDataSetInvalidated();
                 Log.d("Filter_Contact","notifyDataSetInvalidated");
             }

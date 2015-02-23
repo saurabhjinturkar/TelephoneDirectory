@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.stefanomunarini.telephonedirectory.Adapter.MyListAdapter;
 import com.stefanomunarini.telephonedirectory.bean.ContactList;
@@ -31,7 +32,7 @@ public class ContactListFragment extends ListFragment {
 
     public static ContactList contactList;
     public static MyListAdapter myListAdapter;
-    private ContactService contactService;
+    private TextView emptyText;
     private static Context context;
 
     /**
@@ -90,6 +91,8 @@ public class ContactListFragment extends ListFragment {
         contactList = new ContactList(getActivity());
 
         populateListView(contactList);
+
+        //emptyText = (TextView) getActivity().findViewById(android.R.id.empty);
     }
 
     @Override
@@ -103,6 +106,7 @@ public class ContactListFragment extends ListFragment {
 
         registerForContextMenu(getListView());
         getListView().setTextFilterEnabled(true);
+        //getListView().setEmptyView(emptyText);
     }
 
     @Override

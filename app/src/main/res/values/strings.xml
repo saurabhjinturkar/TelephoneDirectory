@@ -18,4 +18,5 @@
     <string name="contact_saved">Contact saved!</string>
     <string name="remove">Remove</string>
     <string name="search_hint">Search contact..</string>
+    <string name="empty_list">No contacts.</string>
 </resources>

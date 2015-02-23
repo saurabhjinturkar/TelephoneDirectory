@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
+        android:singleLine="true"
         android:layout_alignBaseline="@id/textview_name"
         android:layout_toRightOf="@+id/textview_surname"/>
 
@@ -30,6 +31,7 @@
         android:id="@+id/edittext_surname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:layout_alignBaseline="@id/textview_surname"
         android:layout_toRightOf="@id/textview_surname"
         android:layout_below="@id/edittext_name"/>
@@ -49,6 +51,7 @@
         android:inputType="number"
         android:gravity="center"
         android:hint="39"
+        android:singleLine="true"
         android:layout_alignBaseline="@id/textview_number"
         android:layout_toRightOf="@id/textview_surname"
         android:layout_below="@id/edittext_surname"/>
@@ -68,6 +71,7 @@
         android:inputType="number"
         android:gravity="center"
         android:hint="340"
+        android:singleLine="true"
         android:layout_alignBaseline="@id/textview_number"
         android:layout_toRightOf="@id/edittext_internationalprefix"
         android:layout_below="@id/edittext_surname"/>
@@ -79,7 +83,8 @@
         android:inputType="number"
         android:gravity="center"
         android:hint="1234567"
-        android:minEms="3"
+        android:minEms="4"
+        android:singleLine="true"
         android:layout_alignBaseline="@id/textview_number"
         android:layout_toRightOf="@id/edittext_prefix"
         android:layout_below="@id/edittext_surname"/>

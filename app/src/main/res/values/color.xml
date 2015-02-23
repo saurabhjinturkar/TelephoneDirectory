@@ -3,8 +3,8 @@
 
     <color name="primary">#3f51b5</color>
     <color name="primary_pressed">#303f9f</color>
-    <color name="ripple">#ff80ab</color>
-    <color name="accent">#ff4081</color>
-    <color name="accent_pressed">#f50057</color>
+    <color name="ripple">#ffffa078</color>
+    <color name="accent">#ffff785d</color>
+    <color name="accent_pressed">#fff56a44</color>
 
 </resources>
