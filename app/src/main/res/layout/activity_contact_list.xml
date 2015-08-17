@@ -8,15 +8,15 @@
     tools:context="com.stefanomunarini.telephonedirectory.ContactListActivity"
     tools:layout="@android:layout/list_content">
 
-    <com.melnykov.fab.FloatingActionButton
+<!--    <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_search_category_default"
         fab:fab_colorNormal="@color/primary"
         fab:fab_colorPressed="@color/primary_pressed"
-        fab:fab_colorRipple="@color/ripple" />
+        fab:fab_colorRipple="@color/ripple" />-->
 
 </fragment>

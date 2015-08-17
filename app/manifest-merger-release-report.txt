@@ -1,8 +1,6 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:5
 		INJECTED from AndroidManifest.xml:0:0
@@ -10,6 +8,8 @@ ADDED from AndroidManifest.xml:2:1
 	android:versionName
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 	android:versionCode
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
@@ -68,18 +68,18 @@ ADDED from AndroidManifest.xml:23:9
 		ADDED from AndroidManifest.xml:24:13
 meta-data#android.support.PARENT_ACTIVITY
 ADDED from AndroidManifest.xml:27:13
-	android:name
-		ADDED from AndroidManifest.xml:28:17
 	android:value
 		ADDED from AndroidManifest.xml:29:17
+	android:name
+		ADDED from AndroidManifest.xml:28:17
 activity#com.stefanomunarini.telephonedirectory.NewContact
 ADDED from AndroidManifest.xml:31:9
-	android:windowSoftInputMode
-		ADDED from AndroidManifest.xml:34:13
 	android:label
 		ADDED from AndroidManifest.xml:33:13
 	android:parentActivityName
 		ADDED from AndroidManifest.xml:35:13
+	android:windowSoftInputMode
+		ADDED from AndroidManifest.xml:34:13
 	android:name
 		ADDED from AndroidManifest.xml:32:13
 uses-sdk

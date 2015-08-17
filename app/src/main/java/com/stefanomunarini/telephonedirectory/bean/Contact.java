@@ -9,12 +9,23 @@ public class Contact {
     private String name;
     private String surname;
     private String number;
+    private String city;
+    private String emailid;
 
-    public Contact(String id, String name, String surname, String number) {
+    /**
+     * Default Constructor
+     */
+    public Contact() {
+
+    }
+
+    public Contact(String id, String name, String surname, String number, String city, String emailid ) {
         this.setId(id);
         this.setName(name);
         this.setSurname(surname);
         this.setNumber(number);
+        this.setCity(city);
+        this.setEmailid(emailid);
     }
 
     @Override
@@ -54,4 +65,19 @@ public class Contact {
         this.number = number;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getEmailid() {
+        return emailid;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setEmailid(String emailid) {
+        this.emailid = emailid;
+    }
 }

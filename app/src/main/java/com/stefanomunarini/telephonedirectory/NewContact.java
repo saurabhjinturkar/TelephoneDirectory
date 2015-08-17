@@ -28,6 +28,7 @@ public class NewContact extends ActionBarActivity {
     private int id;
 
     private boolean updateContact = false;
+    private String name, surname, international_prefix, prefix, number;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,7 @@ public class NewContact extends ActionBarActivity {
             ContactService contactService = new ContactService(this);
             Contact contact = contactService.getContact(id);
 
-            if (contact!=null) {
+            if (contact != null) {
                 name = contact.getName();
                 surname = contact.getSurname();
                 number = contact.getNumber();
@@ -88,7 +89,7 @@ public class NewContact extends ActionBarActivity {
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
                 //
-                intent = new Intent(this,ContactListActivity.class);
+                intent = new Intent(this, ContactListActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
@@ -104,17 +105,16 @@ public class NewContact extends ActionBarActivity {
         }
     }
 
-    private String name, surname, international_prefix, prefix, number;
     private boolean validateForms() {
-        if (editText_name.length()>1)
-            name = editText_name.getText().toString().substring(0,1).toUpperCase() + editText_name.getText().toString().substring(1);
-        if (editText_surname.length()>1)
-            surname = editText_surname.getText().toString().substring(0,1).toUpperCase() + editText_surname.getText().toString().substring(1);
-        if (editText_international_prefix.length()>1)
+        if (editText_name.length() > 1)
+            name = editText_name.getText().toString().substring(0, 1).toUpperCase() + editText_name.getText().toString().substring(1);
+        if (editText_surname.length() > 1)
+            surname = editText_surname.getText().toString().substring(0, 1).toUpperCase() + editText_surname.getText().toString().substring(1);
+        if (editText_international_prefix.length() > 1)
             international_prefix = editText_international_prefix.getText().toString();
-        if (editText_prefix.length()>1)
+        if (editText_prefix.length() > 1)
             prefix = editText_prefix.getText().toString();
-        if (editText_number.length()>1)
+        if (editText_number.length() > 1)
             number = editText_number.getText().toString();
 
         if (checkForNullValues()) {
@@ -123,7 +123,7 @@ public class NewContact extends ActionBarActivity {
             if (!updateContact) {
                 contactService.insertContact(name, surname, formattedNumber);
             } else {
-                contactService.updateContact(id,name,surname,formattedNumber);
+                contactService.updateContact(id, name, surname, formattedNumber);
             }
             Toast.makeText(this, getResources().getText(R.string.contact_saved), Toast.LENGTH_SHORT).show();
             return true;
@@ -135,8 +135,8 @@ public class NewContact extends ActionBarActivity {
 
     private boolean checkForNullValues() {
         Toast toast;
-        if (name!=null || surname!=null || international_prefix!=null || prefix!=null) {
-            if (name.isEmpty() || surname.isEmpty() || international_prefix.isEmpty() || prefix.isEmpty()) {
+        if (name != null || surname != null || international_prefix != null || prefix != null)
+            if (name.isEmpty() || surname.isEmpty() || international_prefix.isEmpty()) {
                 toast = Toast.makeText(this, getResources().getText(R.string.empty_field), Toast.LENGTH_SHORT);
                 toast.show();
                 return false;
@@ -149,7 +149,6 @@ public class NewContact extends ActionBarActivity {
                     return true;
                 }
             }
-        }
         return false;
     }
 

@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.stefanomunarini.telephonedirectory.Adapter.MyListAdapter;
 import com.stefanomunarini.telephonedirectory.bean.ContactList;
-import com.stefanomunarini.telephonedirectory.database.services.ContactService;
 
 /**
  * A list fragment representing a list of Contacts. This fragment
@@ -30,40 +29,14 @@ import com.stefanomunarini.telephonedirectory.database.services.ContactService;
  */
 public class ContactListFragment extends ListFragment {
 
-    public static ContactList contactList;
-    public static MyListAdapter myListAdapter;
-    private TextView emptyText;
-    private static Context context;
-
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
      */
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
-
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
-
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
-
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface Callbacks {
-        /**
-         * Callback for when an item has been selected.
-         */
-        public void onItemSelected(String id);
-    }
-
+    public static ContactList contactList;
+    public static MyListAdapter myListAdapter;
+    private static Context context;
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
      * nothing. Used only when this fragment is not attached to an activity.
@@ -73,6 +46,16 @@ public class ContactListFragment extends ListFragment {
         public void onItemSelected(String id) {
         }
     };
+    /**
+     * The fragment's current callback object, which is notified of list item
+     * clicks.
+     */
+    private Callbacks mCallbacks = sDummyCallbacks;
+    private TextView emptyText;
+    /**
+     * The current activated item position. Only used on tablets.
+     */
+    private int mActivatedPosition = ListView.INVALID_POSITION;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -178,6 +161,7 @@ public class ContactListFragment extends ListFragment {
 
     /**
      * La funzione associa un evento di tipo "ON-LONG-CLICK" ad ogni elemento della nostra listview
+     *
      * @param item
      * @return
      */
@@ -200,13 +184,13 @@ public class ContactListFragment extends ListFragment {
         }
     }
 
-    private void populateListView(ContactList contactList){
+    private void populateListView(ContactList contactList) {
         myListAdapter = new MyListAdapter(context, android.R.layout.two_line_list_item, contactList);
         setListAdapter(myListAdapter);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu,  MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuInflater inflaterr = getActivity().getMenuInflater();
         inflaterr.inflate(R.menu.menu_contact_list, menu);
@@ -231,5 +215,17 @@ public class ContactListFragment extends ListFragment {
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onItemSelected(String id);
     }
 }

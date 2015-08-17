@@ -33,19 +33,16 @@ import com.melnykov.fab.FloatingActionButton;
 public class ContactListActivity extends ActionBarActivity
         implements ContactListFragment.Callbacks, View.OnClickListener, SearchView.OnQueryTextListener {
 
+    public static Context context;
+    /**
+     * Floating button (used to add an entry)
+     */
+//    FloatingActionButton fab;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
-
-    /**
-     * Floating button (used to add an entry)
-     */
-    FloatingActionButton fab;
-
-    public static Context context;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +65,8 @@ public class ContactListActivity extends ActionBarActivity
                     .setActivateOnItemClick(true);
         }
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+//        fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(this);
     }
 
     /**
@@ -105,17 +102,38 @@ public class ContactListActivity extends ActionBarActivity
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
-            case R.id.fab:
-                Intent intent = new Intent(this, NewContact.class);
-                startActivity(intent);
-                finish();
+        switch (id) {
+//           case R.id.fab:
+//               Intent intent = new Intent(this, NewContact.class);
+//                startActivity(intent);
+//                finish();
+               // Get the SearchView and set the searchable configuration
+//               SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//               SearchView searchView = (SearchView) menu.findItem(R.id.search_item).getActionView();
+//
+//               searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//                   @Override
+//                   public boolean onQueryTextSubmit(String s) {
+////                adapter.getFilter().filter(s.toString());
+//                       return false;
+//                   }
+//
+//                   @Override
+//                   public boolean onQueryTextChange(String s) {
+//                       myListAdapter.getFilter().filter(s);
+//                       return false;
+//                   }
+//               });
+               // Assumes current activity is the searchable activity
+//               searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+//               searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+//              break;
+            default:
                 break;
-            default: break;
         }
     }
 
-    /*@Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_contact_list, menu);

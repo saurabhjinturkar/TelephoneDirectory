@@ -15,16 +15,16 @@ import java.util.ArrayList;
 public class ContactService {
 
     private MyDBAdapter dbHelper;
-    public ContactService(Context context){
+    private ContentValues v;
+
+    public ContactService(Context context) {
         dbHelper = new MyDBAdapter(context);
     }
-
-    private ContentValues v;
 
     /**
      * Insert a new entry
      */
-    public boolean insertContact (String name, String surname, String number){
+    public boolean insertContact(String name, String surname, String number) {
         v = new ContentValues();
         v.put(MyDBAdapter.KEY_NAME, name);
         v.put(MyDBAdapter.KEY_SURNAME, surname);
@@ -36,7 +36,7 @@ public class ContactService {
     /**
      * Update an entry
      */
-    public boolean updateContact (int ID, String name, String surname, String number){
+    public boolean updateContact(int ID, String name, String surname, String number) {
         v = new ContentValues();
         v.put(MyDBAdapter.KEY_NAME, name);
         v.put(MyDBAdapter.KEY_SURNAME, surname);
@@ -48,14 +48,14 @@ public class ContactService {
     /**
      * Delete an entry
      */
-    public boolean deleteContact (int ID){
+    public boolean deleteContact(int ID) {
         return dbHelper.executeDeletion(ID);
     }
 
     /**
      * Get single contact
      */
-    public Contact getContact (int ID){
+    public Contact getContact(int ID) {
         String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " WHERE " + MyDBAdapter.KEY_ID + "=" + ID + " ORDER BY " + MyDBAdapter.KEY_NAME + ", " + MyDBAdapter.KEY_SURNAME + ", " + MyDBAdapter.KEY_NUMBER;
         Cursor c = dbHelper.getCursor(query);
         Contact contact = null;
@@ -64,7 +64,28 @@ public class ContactService {
                     c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID)),
                     c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
                     c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)));
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)));
+        }
+        return contact;
+    }
+
+    /**
+     * Get single contact
+     */
+    public Contact getContact(String searchCriteria) {
+        String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " WHERE " + MyDBAdapter.KEY_NAME + " Like %" + searchCriteria + "% OR " + MyDBAdapter.KEY_SURNAME + " Like %" + searchCriteria + "% OR " + MyDBAdapter.KEY_CITY + " Like %" + searchCriteria + "%";
+        Cursor c = dbHelper.getCursor(query);
+        Contact contact = null;
+        while (c.moveToNext()) {
+            contact = new Contact(
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)));
         }
         return contact;
     }
@@ -72,22 +93,21 @@ public class ContactService {
     /**
      * Get all contacts
      */
-    public ArrayList<Contact> getAllContacts (){
+    public ArrayList<Contact> getAllContacts() {
         String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " ORDER BY " + MyDBAdapter.KEY_NAME + ", " + MyDBAdapter.KEY_SURNAME + ", " + MyDBAdapter.KEY_NUMBER;
         Cursor c = dbHelper.getCursor(query);
         ArrayList<Contact> contactArrayList = new ArrayList<>();
-        if (c!=null){
-            while (c.moveToNext()){
+        if (c != null) {
+            while (c.moveToNext()) {
                 Contact contact = new Contact((c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID))),
                         c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
                         c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
-                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)));
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)));
                 contactArrayList.add(contact);
             }
         }
         return contactArrayList;
     }
-
-
-
 }

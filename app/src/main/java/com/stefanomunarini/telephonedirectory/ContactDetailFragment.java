@@ -12,11 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stefanomunarini.telephonedirectory.bean.Contact;
 import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
 import com.stefanomunarini.telephonedirectory.database.services.ContactService;
+
+import org.w3c.dom.Text;
 
 /**
  * A fragment representing a single Contact detail screen.
@@ -37,6 +38,10 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
     public static Contact mContact;
     private ContactService contactService;
 
+    private TextView name;
+    private TextView contactnumber;
+    private TextView emailid;
+    private TextView city;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -65,13 +70,21 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contact_detail, container, false);
 
+        name = (TextView) rootView.findViewById(R.id.contact_name_surname);
+        contactnumber = (TextView) rootView.findViewById(R.id.contact_number);
+        emailid = (TextView) rootView.findViewById(R.id.contact_emailid);
+        city = (TextView) rootView.findViewById(R.id.contact_city);
+
         // Show the content as text in a TextView.
         if (mContact != null) {
-            ((TextView) rootView.findViewById(R.id.contact_name_surname)).setText(mContact.getName() + " " + mContact.getSurname());
-            ((TextView) rootView.findViewById(R.id.contact_number)).setText(mContact.getNumber());
+            name.setText(mContact.getName() + " " + mContact.getSurname());
+            contactnumber.setText(mContact.getNumber());
 
-            rootView.findViewById(R.id.contact_number).setOnClickListener(this);
-            ((TextView)rootView.findViewById(R.id.contact_number)).setMovementMethod(LinkMovementMethod.getInstance());
+            contactnumber.setOnClickListener(this);
+            ((TextView) rootView.findViewById(R.id.contact_number)).setMovementMethod(LinkMovementMethod.getInstance());
+
+            emailid.setText(mContact.getEmailid());
+            city.setText(mContact.getCity());
         }
 
         return rootView;
@@ -80,7 +93,7 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_contact_detail, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -102,7 +115,7 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.contact_number:
                 String number = "tel:" + mContact.getNumber().toString().trim().substring(1);
                 Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));

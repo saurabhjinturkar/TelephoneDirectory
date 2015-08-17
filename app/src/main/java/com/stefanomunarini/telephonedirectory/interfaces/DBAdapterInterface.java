@@ -9,30 +9,34 @@ import android.database.Cursor;
 public interface DBAdapterInterface {
 
     /**
-     *  Insert an entry
-     *  @Param: ContentValues v
-     *  @Return: boolean
+     * Insert an entry
+     *
+     * @Param: ContentValues v
+     * @Return: boolean
      */
     public boolean executeInsert(ContentValues v);
 
     /**
-     *  Update an entry
-     *  @Param: ContentValues v, Object ID
-     *  @Return: boolean
+     * Update an entry
+     *
+     * @Param: ContentValues v, Object ID
+     * @Return: boolean
      */
     public boolean executeUpdate(ContentValues v, int ID);
 
     /**
-     *  Delete an entry
-     *  @Param: int ID
-     *  @Return: boolean
+     * Delete an entry
+     *
+     * @Param: int ID
+     * @Return: boolean
      */
     public boolean executeDeletion(int ID);
 
     /**
-     *  Get cursor
-     *  @Param: String query
-     *  @Return: Cursor
+     * Get cursor
+     *
+     * @Param: String query
+     * @Return: Cursor
      */
     public Cursor getCursor(String query);
 }

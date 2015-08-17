@@ -14,7 +14,6 @@ import com.stefanomunarini.telephonedirectory.ContactListFragment;
 import com.stefanomunarini.telephonedirectory.bean.Contact;
 import com.stefanomunarini.telephonedirectory.bean.ContactList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +23,7 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
 
     private Context context;
     private List<Contact> contactList;
+    private Contact_Filter contact_filter;
 
     public MyListAdapter(Context context, int textViewResourceId, List<Contact> items) {
         super(context, textViewResourceId, items);
@@ -40,13 +40,13 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
         }
 
         Contact item = getItem(position);
-        if (item!= null) {
+        if (item != null) {
 
             TextView nameSurnameView = (TextView) view.findViewById(android.R.id.text1);
             TextView numberView = (TextView) view.findViewById(android.R.id.text2);
 
-            nameSurnameView.setPadding(16,16,16,16);
-            numberView.setPadding(16,16,16,16);
+            nameSurnameView.setPadding(16, 16, 16, 16);
+            numberView.setPadding(16, 16, 16, 16);
 
             if (nameSurnameView != null) {
                 nameSurnameView.setText(item.getName() + " " + item.getSurname());
@@ -60,7 +60,6 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
         return view;
     }
 
-    private Contact_Filter contact_filter;
     @Override
     public Filter getFilter() {
 
@@ -80,7 +79,7 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
 
         private List<Contact> mContact;
 
-        public Contact_Filter(List<Contact> contacts){
+        public Contact_Filter(List<Contact> contacts) {
             this.mContact = contacts;
         }
 
@@ -130,9 +129,8 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
             if (filterResults.count == 0) {
                 ContactListFragment.contactList.clear();
                 notifyDataSetInvalidated();
-                Log.d("Filter_Contact","notifyDataSetInvalidated");
-            }
-            else {
+                Log.d("Filter_Contact", "notifyDataSetInvalidated");
+            } else {
                 ContactListFragment.contactList.clear();
                 ContactListFragment.contactList.addAll((ContactList) filterResults.values);
                 Log.d("Filter_Contact", "notifyDataSetChanged");
