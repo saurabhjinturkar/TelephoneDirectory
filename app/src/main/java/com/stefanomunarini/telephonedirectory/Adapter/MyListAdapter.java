@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.stefanomunarini.telephonedirectory.ContactListFragment;
 import com.stefanomunarini.telephonedirectory.bean.Contact;
 import com.stefanomunarini.telephonedirectory.bean.ContactList;
+import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
+import com.stefanomunarini.telephonedirectory.database.services.ContactService;
 
 import java.util.List;
 
@@ -89,37 +91,43 @@ public class MyListAdapter extends ArrayAdapter<Contact> implements Filterable {
 
             Log.d("Filter_Contact", "Finding... " + constraint);
 
-            ContactList contactList1;
-            if (constraint == null || constraint.length() == 0) {
-                Log.d("Filter_Contact", "constraint == null || constraint.length() == 0... ");
-                Log.d("Filter_Contact", "mContact size... " + mContact.size());
-                contactList1 = new ContactList(getContext());
-                // Don't do filter, because the search word is null
+            ContactService service = new ContactService(context);
+
+            ContactList contactList1 = new ContactList(context);
+            contactList1.clear();
+            contactList1.addAll(service.filterContact(constraint.toString()));
+
+            System.out.println(service.filterContact(constraint.toString()));
+
+//            if (constraint == null || constraint.length() == 0) {
+//                        Log.d("Filter_Contact", "constraint == null || constraint.length() == 0... ");
+//                        Log.d("Filter_Contact", "mContact size... " + mContact.size());
+//                        contactList1 = new ContactList(getContext());
+//                        // Don't do filter, because the search word is null
+//                        results.values = contactList1;
+//                        results.count = contactList1.size();
+//                    } else {
+//                        contactList1 = new ContactList(getContext());
+//                        // We perform filtering operation
+//                        ContactList mContactList = new ContactList();
+//
+//                        for (Contact contact : contactList1) {
+//
+//                            String name = contact.getName().toUpperCase();
+//                            String surname = contact.getSurname().toUpperCase();
+//                            String number = contact.getNumber();
+//                            if (name.contains(constraint.toString().toUpperCase()) || surname.contains(constraint.toString().toUpperCase()) || number.contains(constraint.toString())) {
+//                                mContactList.add(contact);
+//                                Log.d("Filter_Contact", "Found... " + contact.getName() + " " + contact.getSurname());
+//                            } else {
+//                                mContactList.remove(contact);
+//                                Log.d("Filter_Contact", "No matches found..Deleting contact from list..");
+//                            }
+//                }
+
                 results.values = contactList1;
                 results.count = contactList1.size();
-            } else {
-                contactList1 = new ContactList(getContext());
-                // We perform filtering operation
-                ContactList mContactList = new ContactList();
 
-                for (Contact contact : contactList1) {
-
-                    String name = contact.getName().toUpperCase();
-                    String surname = contact.getSurname().toUpperCase();
-                    String number = contact.getNumber();
-                    if (name.contains(constraint.toString().toUpperCase()) || surname.contains(constraint.toString().toUpperCase()) || number.contains(constraint.toString())) {
-                        mContactList.add(contact);
-                        Log.d("Filter_Contact", "Found... " + contact.getName() + " " + contact.getSurname());
-                    } else {
-                        mContactList.remove(contact);
-                        Log.d("Filter_Contact", "No matches found..Deleting contact from list..");
-                    }
-                }
-
-                results.values = mContactList;
-                results.count = mContactList.size();
-
-            }
             return results;
         }
 

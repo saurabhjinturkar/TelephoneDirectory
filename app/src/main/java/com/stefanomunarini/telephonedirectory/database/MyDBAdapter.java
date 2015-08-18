@@ -39,6 +39,7 @@ public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface 
     public static final String KEY_NUMBER = "number";
     public static final String KEY_CITY = "city";
     public static final String KEY_EMAILID = "emailid";
+    public static final String KEY_ADDRESS = "address";
 
     // CREATE TABLE QUERY
     private static final String TABLE_CONTACT_CREATE =
@@ -48,11 +49,12 @@ public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface 
                     KEY_SURNAME + " VARCHAR NOT NULL, " +
                     KEY_EMAILID + " VARCHAR NOT NULL, " +
                     KEY_CITY + " VARCHAR NOT NULL, " +
+                    KEY_ADDRESS + " VARCHAR NOT NULL, " +
                     KEY_NUMBER + " VARCHAR NOT NULL);";
     //Database name
     private static final String DATABASE_NAME = "telephonedirectory.db";
     //Database version
-    private static final int SCHEMA_VERSION = 5;
+    private static final int SCHEMA_VERSION = 7;
     // Database instance
     public static SQLiteDatabase db;
     // TAG used for Logs
@@ -160,7 +162,7 @@ public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface 
             while ((line = buffer.readLine()) != null) {
                 String[] colums = line.split("\\|");
                 System.out.println(Arrays.toString(colums));
-                if (colums.length != 5) {
+                if (colums.length != 6) {
                     Log.d("CSVParser", "Skipping Bad CSV Row");
                     continue;
                 }
@@ -170,6 +172,7 @@ public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface 
                 cv.put(MyDBAdapter.KEY_NUMBER, colums[2].trim());
                 cv.put(MyDBAdapter.KEY_EMAILID, colums[3].trim());
                 cv.put(MyDBAdapter.KEY_CITY, colums[4].trim());
+                cv.put(MyDBAdapter.KEY_ADDRESS, colums[5].trim());
                 db.insert(TABLE_NAME, null, cv);
                 System.out.println(cv.toString());
             }

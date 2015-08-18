@@ -8,6 +8,9 @@ import com.stefanomunarini.telephonedirectory.bean.Contact;
 import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Stefano on 2/18/15.
@@ -66,7 +69,8 @@ public class ContactService {
                     c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
                     c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
                     c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)));
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)),
+                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_ADDRESS)));
         }
         return contact;
     }
@@ -74,20 +78,29 @@ public class ContactService {
     /**
      * Get single contact
      */
-    public Contact getContact(String searchCriteria) {
-        String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " WHERE " + MyDBAdapter.KEY_NAME + " Like %" + searchCriteria + "% OR " + MyDBAdapter.KEY_SURNAME + " Like %" + searchCriteria + "% OR " + MyDBAdapter.KEY_CITY + " Like %" + searchCriteria + "%";
-        Cursor c = dbHelper.getCursor(query);
-        Contact contact = null;
-        while (c.moveToNext()) {
-            contact = new Contact(
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
-                    c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)));
+    public ArrayList<Contact> filterContact(String searchCriteria) {
+        ArrayList<Contact> contactArrayList = new ArrayList<>();
+        Set<Contact> contactSet = new HashSet<>();
+
+        String[] criteria = searchCriteria.split(" ");
+
+        for (int iter = 0; iter < criteria.length; iter++) {
+            String query = "SELECT * FROM " + MyDBAdapter.TABLE_NAME + " WHERE " + MyDBAdapter.KEY_NAME + " Like '%" + criteria[iter] + "%' OR " + MyDBAdapter.KEY_SURNAME + " Like '%" + criteria[iter] + "%' OR " + MyDBAdapter.KEY_CITY + " Like '%" + criteria[iter] + "%';";
+            Cursor c = dbHelper.getCursor(query);
+            while (c.moveToNext()) {
+                Contact contact = new Contact(
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_ID)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_NAME)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_ADDRESS)));
+                contactSet.add(contact);
+            }
         }
-        return contact;
+        contactArrayList = new ArrayList<>(contactSet);
+        return contactArrayList;
     }
 
     /**
@@ -104,7 +117,8 @@ public class ContactService {
                         c.getString(c.getColumnIndex(MyDBAdapter.KEY_SURNAME)),
                         c.getString(c.getColumnIndex(MyDBAdapter.KEY_NUMBER)),
                         c.getString(c.getColumnIndex(MyDBAdapter.KEY_CITY)),
-                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)));
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_EMAILID)),
+                        c.getString(c.getColumnIndex(MyDBAdapter.KEY_ADDRESS)));
                 contactArrayList.add(contact);
             }
         }

@@ -11,6 +11,7 @@ public class Contact {
     private String number;
     private String city;
     private String emailid;
+    private String address;
 
     /**
      * Default Constructor
@@ -19,13 +20,14 @@ public class Contact {
 
     }
 
-    public Contact(String id, String name, String surname, String number, String city, String emailid ) {
+    public Contact(String id, String name, String surname, String number, String city, String emailid, String address ) {
         this.setId(id);
         this.setName(name);
         this.setSurname(surname);
         this.setNumber(number);
         this.setCity(city);
         this.setEmailid(emailid);
+        this.setAddress(address);
     }
 
     @Override
@@ -79,5 +81,30 @@ public class Contact {
 
     public void setEmailid(String emailid) {
         this.emailid = emailid;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        if (!id.equals(contact.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

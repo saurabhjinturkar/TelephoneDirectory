@@ -76,10 +76,10 @@ public class ContactDetailActivity extends ActionBarActivity {
                 //
                 navigateUpTo(new Intent(this, ContactListActivity.class));
                 return true;
-            case R.id.action_edit:
-                Intent intent = new Intent(this, NewContact.class);
-                intent.putExtra(MyDBAdapter.KEY_ID, ContactDetailFragment.mContact.getId());
-                startActivity(intent);
+//            case R.id.action_edit:
+//                Intent intent = new Intent(this, NewContact.class);
+//                intent.putExtra(MyDBAdapter.KEY_ID, ContactDetailFragment.mContact.getId());
+//                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

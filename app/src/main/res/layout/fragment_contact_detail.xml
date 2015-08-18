@@ -42,12 +42,25 @@
         android:text="Email ID" />
 
     <TextView
-        android:id="@+id/contact_city"
+        android:id="@+id/contact_address"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:layout_below="@id/contact_emailid"
+        android:autoLink="none"
+        android:clickable="true"
+        android:linksClickable="true"
+        android:textIsSelectable="true"
+        android:text="Address" />
+
+    <TextView
+        android:id="@+id/contact_city"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_below="@id/contact_address"
         android:autoLink="all"
         android:clickable="true"
         android:linksClickable="true"

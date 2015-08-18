@@ -42,6 +42,7 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
     private TextView contactnumber;
     private TextView emailid;
     private TextView city;
+    private TextView address;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -74,6 +75,7 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
         contactnumber = (TextView) rootView.findViewById(R.id.contact_number);
         emailid = (TextView) rootView.findViewById(R.id.contact_emailid);
         city = (TextView) rootView.findViewById(R.id.contact_city);
+        address = (TextView) rootView.findViewById(R.id.contact_address);
 
         // Show the content as text in a TextView.
         if (mContact != null) {
@@ -85,6 +87,8 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
 
             emailid.setText(mContact.getEmailid());
             city.setText(mContact.getCity());
+            address.setText(mContact.getAddress() + "," + mContact.getCity());
+            address.setOnClickListener(this);
         }
 
         return rootView;
@@ -99,10 +103,10 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_edit:
+/*            case R.id.action_edit:
                 Intent intent = new Intent(getActivity(), NewContact.class);
                 intent.putExtra(MyDBAdapter.KEY_ID, ContactDetailFragment.mContact.getId());
-                startActivity(intent);
+                startActivity(intent);*/
             /*case R.id.action_remove:
                 contactService = new ContactService(getActivity());
                 contactService.deleteContact(Integer.parseInt(mContact.getId()));
@@ -120,6 +124,13 @@ public class ContactDetailFragment extends Fragment implements View.OnClickListe
                 String number = "tel:" + mContact.getNumber().toString().trim().substring(1);
                 Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                 startActivity(callIntent);
+
+            case R.id.contact_address:
+                System.out.println("Address Clicked");
+                TextView textView = (TextView) v;
+                String map = "http://maps.google.co.in/maps?q=" + textView.getText().toString().replace(" ", "+");
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+                startActivity(i);
         }
     }
 }
