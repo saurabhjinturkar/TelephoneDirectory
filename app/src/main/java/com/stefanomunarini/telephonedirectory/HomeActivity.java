@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class HomeActivity extends ActionBarActivity {
 
     private GCMClientManager pushClientManager;
-    String PROJECT_NUMBER = "<YOUR PROJECT NUMBER HERE>";
+    String PROJECT_NUMBER = "939700174543";
 
     Button directory;
     Button news;
@@ -32,6 +32,14 @@ public class HomeActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ContactListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), NewsActivity.class);
                 startActivity(intent);
             }
         });
@@ -74,9 +82,9 @@ public class HomeActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return false;
-        }
+//        if (id == R.id.action_settings) {
+//            return false;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

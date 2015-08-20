@@ -1,7 +1,15 @@
-package com.stefanomunarini.telephonedirectory;
+package com.stefanomunarini.telephonedirectory.gcm;
+
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+
+import com.google.android.gms.gcm.GcmListenerService;
+import com.stefanomunarini.telephonedirectory.R;
 
 /**
- * Created by Saurabh on 8/19/2015.
+ * Created by Saurabh on 8/20/2015.
  */
 public class GCMMessageHandler extends GcmListenerService {
     public static final int MESSAGE_NOTIFICATION_ID = 435345;
@@ -9,8 +17,8 @@ public class GCMMessageHandler extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
-
         createNotification(from, message);
+
     }
 
     // Creates notification based on title and body received

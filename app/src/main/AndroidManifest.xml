@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.stefanomunarini.telephonedirectory">
+    package="com.stefanomunarini.telephonedirectory" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <permission
         android:name="com.stefanomunarini.telephonedirectory.permission.C2D_MESSAGE"
@@ -18,8 +19,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -31,24 +31,24 @@
         </receiver>
 
         <service
-            android:name=".GCMMessageHandler"
+            android:name=".gcm.GCMMessageHandler"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
 
-        <service
-            android:name="com.example.MyInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
-            </intent-filter>
-        </service>
+        <!--<service-->
+            <!--android:name="com.example.MyInstanceIDListenerService"-->
+            <!--android:exported="false" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.gms.iid.InstanceID" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
         <activity
             android:name=".ContactListActivity"
-            android:label="@string/title_contact_list">
+            android:label="@string/title_contact_list" >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -56,7 +56,7 @@
         <activity
             android:name=".ContactDetailActivity"
             android:label="@string/title_contact_detail"
-            android:parentActivityName=".ContactListActivity">
+            android:parentActivityName=".ContactListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.stefanomunarini.telephonedirectory.ContactListActivity" />
@@ -65,19 +65,23 @@
             android:name=".NewContact"
             android:label="@string/title_new_contact"
             android:parentActivityName=".ContactListActivity"
-            android:windowSoftInputMode="stateVisible">
+            android:windowSoftInputMode="stateVisible" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.stefanomunarini.telephonedirectory.ContactListActivity" />
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home">
+            android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".NewsActivity"
+            android:label="@string/title_activity_news" >
         </activity>
     </application>
 

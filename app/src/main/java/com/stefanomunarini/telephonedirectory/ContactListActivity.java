@@ -8,10 +8,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
-
-import com.melnykov.fab.FloatingActionButton;
 
 
 /**
@@ -107,7 +106,7 @@ public class ContactListActivity extends ActionBarActivity
 //               Intent intent = new Intent(this, NewContact.class);
 //                startActivity(intent);
 //                finish();
-               // Get the SearchView and set the searchable configuration
+            // Get the SearchView and set the searchable configuration
 //               SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 //               SearchView searchView = (SearchView) menu.findItem(R.id.search_item).getActionView();
 //
@@ -124,7 +123,7 @@ public class ContactListActivity extends ActionBarActivity
 //                       return false;
 //                   }
 //               });
-               // Assumes current activity is the searchable activity
+            // Assumes current activity is the searchable activity
 //               searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 //               searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 //              break;
@@ -133,7 +132,7 @@ public class ContactListActivity extends ActionBarActivity
         }
     }
 
-/*    @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_contact_list, menu);
@@ -151,7 +150,20 @@ public class ContactListActivity extends ActionBarActivity
         }
 
         return super.onCreateOptionsMenu(menu);
-    }*/
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.update_contact:
+
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
 
     @Override
     public boolean onQueryTextSubmit(String s) {

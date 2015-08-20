@@ -23,5 +23,6 @@
     <string name="empty_list">No contacts.</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_news">NewsActivity</string>
 
 </resources>

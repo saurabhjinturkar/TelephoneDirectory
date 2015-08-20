@@ -3,7 +3,9 @@ package com.stefanomunarini.telephonedirectory;
 /**
  * Created by Saurabh on 8/19/2015.
  */
-import java.io.IOException;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,10 +13,24 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GCMClientManager {
     // Constants
@@ -29,20 +45,24 @@ public class GCMClientManager {
     private String projectNumber;
     private Activity activity;
 
-    public static abstract class RegistrationCompletedHandler {
-        public abstract void onSuccess(String registrationId, boolean isNewRegistration);
-        public void onFailure(String ex) {
-            // If there is an error, don't just keep trying to register.
-            // Require the user to click a button again, or perform
-            // exponential back-off.
-            Log.e(TAG, ex);
-        }
-    }
-
     public GCMClientManager(Activity activity, String projectNumber) {
         this.activity = activity;
         this.projectNumber = projectNumber;
         this.gcm = GoogleCloudMessaging.getInstance(activity);
+    }
+
+    /**
+     * @return Application's version code from the {@code PackageManager}.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
     }
 
     // Register if needed or fetch from local store
@@ -63,7 +83,7 @@ public class GCMClientManager {
 
     /**
      * Registers the application with GCM servers asynchronously.
-     * <p>
+     * <p/>
      * Stores the registration ID and app versionCode in the application's
      * shared preferences.
      */
@@ -81,6 +101,7 @@ public class GCMClientManager {
 
                     // Persist the regID - no need to register again.
                     storeRegistrationId(getContext(), regid);
+                    storeRegistrationIdToServer(getContext(), regid);
 
                 } catch (IOException ex) {
                     // If there is an error, don't just keep trying to register.
@@ -102,11 +123,11 @@ public class GCMClientManager {
 
     /**
      * Gets the current registration ID for application on GCM service.
-     * <p>
+     * <p/>
      * If result is empty, the app needs to register.
      *
      * @return registration ID, or empty string if there is no existing
-     *         registration ID.
+     * registration ID.
      */
     private String getRegistrationId(Context context) {
         final SharedPreferences prefs = getGCMPreferences(context);
@@ -133,7 +154,7 @@ public class GCMClientManager {
      * {@code SharedPreferences}.
      *
      * @param context application's context.
-     * @param regId registration ID
+     * @param regId   registration ID
      */
     private void storeRegistrationId(Context context, String regId) {
         final SharedPreferences prefs = getGCMPreferences(context);
@@ -145,18 +166,59 @@ public class GCMClientManager {
         editor.commit();
     }
 
-    /**
-     * @return Application's version code from the {@code PackageManager}.
-     */
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (NameNotFoundException e) {
-            // should never happen
-            throw new RuntimeException("Could not get package name: " + e);
-        }
+    private void storeRegistrationIdToServer(final Context context, final String regid) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "http://saurabhjinturkar.in/gcm/register.php";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        Toast.makeText(context, response + "Successfully Registered", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error" + error.toString(), Toast.LENGTH_LONG).show();
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                    String email = "";
+                    //Getting all registered Google Accounts;
+                    try {
+                        Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
+                        for (Account account : accounts) {
+                            email = email + "|" + account.name;
+                        }
+                    } catch (Exception e) {
+                        Log.i("Exception", "Exception:" + e);
+                    }
+
+                    //For all registered accounts;
+                    /*try {
+                        Account[] accounts = AccountManager.get(this).getAccounts();
+			            for (Account account : accounts) {
+			        	Item item = new Item( account.type, account.name);
+			           	accountsList.add(item);
+			              }
+		                } catch (Exception e) {
+			            Log.i("Exception", "Exception:" + e);
+		            }*/
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("regId", regid);
+
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     private SharedPreferences getGCMPreferences(Context context) {
@@ -191,5 +253,16 @@ public class GCMClientManager {
 
     private Activity getActivity() {
         return activity;
+    }
+
+    public static abstract class RegistrationCompletedHandler {
+        public abstract void onSuccess(String registrationId, boolean isNewRegistration);
+
+        public void onFailure(String ex) {
+            // If there is an error, don't just keep trying to register.
+            // Require the user to click a button again, or perform
+            // exponential back-off.
+            Log.e(TAG, ex);
+        }
     }
 }
