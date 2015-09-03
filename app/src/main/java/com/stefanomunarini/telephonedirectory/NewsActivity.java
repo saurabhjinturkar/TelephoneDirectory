@@ -6,10 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.stefanomunarini.telephonedirectory.Adapter.NewsListAdapter;
+import com.stefanomunarini.telephonedirectory.database.NewsDBAdapter;
+
 
 public class NewsActivity extends ActionBarActivity {
 
     ListView newslist;
+    NewsListAdapter newsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,9 @@ public class NewsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_news);
 
         newslist = (ListView) findViewById(R.id.news_listView);
+
+        newsListAdapter = new NewsListAdapter(this);
+        newslist.setAdapter(newsListAdapter);
     }
 
 
@@ -36,6 +43,12 @@ public class NewsActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_clear) {
+            NewsDBAdapter adapter = new NewsDBAdapter(this);
+            adapter.truncate();
+            adapter.close();
+            newsListAdapter = new NewsListAdapter(this);
+            newslist.setAdapter(newsListAdapter);
+            newsListAdapter.notifyDataSetChanged();
             return true;
         }
 

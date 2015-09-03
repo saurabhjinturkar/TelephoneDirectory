@@ -182,4 +182,42 @@ public class MyDBAdapter extends SQLiteOpenHelper implements DBAdapterInterface 
         db.setTransactionSuccessful();
         db.endTransaction();
     }
+
+
+    public void updateTable(String data) {
+
+        String[] dataLines = data.split("\\n");
+        String line = "";
+        db.beginTransaction();
+
+        for (int iter = 0; iter < dataLines.length; iter++) {
+            line = dataLines[iter];
+
+            Log.i(TAG, line);
+            String[] colums = line.split("\\|");
+            System.out.println(Arrays.toString(colums));
+            if (colums.length != 6) {
+                Log.d("CSVParser", "Skipping Bad CSV Row");
+                continue;
+            }
+            ContentValues cv = new ContentValues(5);
+            cv.put(MyDBAdapter.KEY_NAME, colums[0].trim());
+            cv.put(MyDBAdapter.KEY_SURNAME, colums[1].trim());
+            cv.put(MyDBAdapter.KEY_NUMBER, colums[2].trim());
+            cv.put(MyDBAdapter.KEY_EMAILID, colums[3].trim());
+            cv.put(MyDBAdapter.KEY_CITY, colums[4].trim());
+            cv.put(MyDBAdapter.KEY_ADDRESS, colums[5].trim());
+            db.insert(TABLE_NAME, null, cv);
+            System.out.println(cv.toString());
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public void truncateTable() {
+        String sql = "Delete from " + TABLE_NAME;
+        db.execSQL(sql);
+    }
+
 }

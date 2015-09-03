@@ -28,7 +28,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -189,18 +188,18 @@ public class GCMClientManager {
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                    String email = "";
-                    //Getting all registered Google Accounts;
-                    try {
-                        Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
-                        for (Account account : accounts) {
-                            email = email + "|" + account.name;
-                        }
-                    } catch (Exception e) {
-                        Log.i("Exception", "Exception:" + e);
+                String email = "";
+                //Getting all registered Google Accounts;
+                try {
+                    Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
+                    for (Account account : accounts) {
+                        email = email + "|" + account.name;
                     }
+                } catch (Exception e) {
+                    Log.i("Exception", "Exception:" + e);
+                }
 
-                    //For all registered accounts;
+                //For all registered accounts;
                     /*try {
                         Account[] accounts = AccountManager.get(this).getAccounts();
 			            for (Account account : accounts) {
@@ -237,8 +236,9 @@ public class GCMClientManager {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+//                GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
+//                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                Log.i(TAG, resultCode +"");
             } else {
                 Log.i(TAG, "This device is not supported.");
             }

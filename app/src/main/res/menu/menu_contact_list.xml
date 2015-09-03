@@ -11,5 +11,5 @@
         android:id="@+id/update_contact"
         android:icon="@android:drawable/ic_popup_sync"
         android:title="Update"
-        app:showAsAction="collapseActionView|ifRoom" />
+        app:showAsAction="never" />
 </menu>

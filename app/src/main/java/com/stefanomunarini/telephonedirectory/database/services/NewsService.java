@@ -77,7 +77,7 @@ public class NewsService {
      * Get all news
      */
     public ArrayList<News> getAllNews() {
-        String query = "SELECT * FROM " + NewsDBAdapter.TABLE_NAME + " ORDER BY " + NewsDBAdapter.KEY_TIME + " DESC;";
+        String query = "SELECT * FROM " + NewsDBAdapter.TABLE_NAME + " ORDER BY " + NewsDBAdapter.KEY_TIME + " ASC;";
         Cursor c = newsDBAdapter.getCursor(query);
         ArrayList<News> newsArrayList = new ArrayList<>();
         if (c != null) {

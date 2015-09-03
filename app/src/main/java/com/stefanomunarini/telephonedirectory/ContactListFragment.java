@@ -71,7 +71,7 @@ public class ContactListFragment extends ListFragment {
         setHasOptionsMenu(true);
 
         context = getActivity();
-        contactList = new ContactList(getActivity());
+        contactList = new ContactList(context);
 
         populateListView(contactList);
 

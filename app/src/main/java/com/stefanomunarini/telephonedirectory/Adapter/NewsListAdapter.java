@@ -54,7 +54,7 @@ public class NewsListAdapter extends ArrayAdapter<News> {
             Date date = new Date();
             date.setTime(Long.parseLong(item.getTime()));
             if (newsBodyView != null) {
-                newsBodyView.setText(item.getBody() + "\n" + item.getTime());
+                newsBodyView.setText(item.getBody() + "\n" + date.toString());
             }
         }
 

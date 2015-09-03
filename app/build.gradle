@@ -28,4 +28,6 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.mcxiaoke.volley:library:1.0.17'
     compile 'com.google.android.gms:play-services-gcm:7.8.+'
+    compile 'com.google.code.gson:gson:1.7.2'
+
 }

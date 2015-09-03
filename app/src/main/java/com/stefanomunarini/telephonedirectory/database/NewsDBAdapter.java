@@ -41,7 +41,7 @@ public class NewsDBAdapter extends SQLiteOpenHelper implements DBAdapterInterfac
                     KEY_BODY + " VARCHAR NOT NULL, " +
                     KEY_TIME + " VARCHAR NOT NULL);";
     //Database name
-    private static final String DATABASE_NAME = "telephonedirectory.db";
+    private static final String DATABASE_NAME = "news.db";
     //Database version
     private static final int SCHEMA_VERSION = 1;
     // Database instance
@@ -133,8 +133,10 @@ public class NewsDBAdapter extends SQLiteOpenHelper implements DBAdapterInterfac
     }
 
     public void truncate() {
-        String sql = "truncate table if exists " + TABLE_NAME;
+        String sql = "drop table if exists " + TABLE_NAME;
         db.execSQL(sql);
+        onCreate(db);
+
     }
 
     public void insertTestData(SQLiteDatabase db) {

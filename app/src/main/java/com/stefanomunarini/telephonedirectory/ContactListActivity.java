@@ -1,16 +1,36 @@
 package com.stefanomunarini.telephonedirectory;
 
-import android.app.SearchManager;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.stefanomunarini.telephonedirectory.bean.ContactList;
+import com.stefanomunarini.telephonedirectory.database.MyDBAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -43,6 +63,9 @@ public class ContactListActivity extends ActionBarActivity
      */
     private boolean mTwoPane;
 
+    private String version;
+    private String url = "http://saurabhjinturkar.in/gcm/update.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +87,8 @@ public class ContactListActivity extends ActionBarActivity
                     .setActivateOnItemClick(true);
         }
 
-//        fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(this);
+        version = readVersion();
+        Log.i("ContactListActivity", "Version from shared prefs " + version);
     }
 
     /**
@@ -100,75 +123,166 @@ public class ContactListActivity extends ActionBarActivity
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-//           case R.id.fab:
-//               Intent intent = new Intent(this, NewContact.class);
-//                startActivity(intent);
-//                finish();
-            // Get the SearchView and set the searchable configuration
-//               SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//               SearchView searchView = (SearchView) menu.findItem(R.id.search_item).getActionView();
-//
-//               searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//                   @Override
-//                   public boolean onQueryTextSubmit(String s) {
-////                adapter.getFilter().filter(s.toString());
-//                       return false;
-//                   }
-//
-//                   @Override
-//                   public boolean onQueryTextChange(String s) {
-//                       myListAdapter.getFilter().filter(s);
-//                       return false;
-//                   }
-//               });
-            // Assumes current activity is the searchable activity
-//               searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-//               searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-//              break;
-            default:
-                break;
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_contact_list, menu);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search_item).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
-        if (searchView != null) {
-            searchView.setOnQueryTextListener(this);
-        }
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
+
+
         switch (id) {
             case R.id.update_contact:
 
+                this.version = readVersion();
 
+                // Start progress dialog
+                final ProgressDialog progressDialog = new ProgressDialog(ContactListActivity.this);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Updating..");
+
+                RequestQueue queue = Volley.newRequestQueue(context);
+
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("UPDATE_RESPONSE", response);
+
+                                JsonParser parser = new JsonParser();
+                                JsonElement jsonElement = parser.parse(response);
+
+                                JsonObject obj;
+                                if (jsonElement.isJsonArray()) {
+                                    obj = (JsonObject) ((JsonArray) jsonElement).get(0);
+                                } else {
+                                    obj = (JsonObject) jsonElement;
+                                }
+
+                                if (obj.get("code").getAsInt() == 102) {
+                                    updateVersion(obj.get("version").getAsString());
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ContactListActivity.this);
+                                    builder.setMessage("Your contacts are already updated!")
+                                            .setTitle("Already updated..").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    progressDialog.dismiss();
+                                    dialog.show();
+                                    return;
+                                }
+
+                                if (obj.get("code").getAsInt() == 103) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(ContactListActivity.this);
+
+                                    builder.setMessage("You are not authorized to access the contacts. Please contact admin.")
+                                            .setTitle("Authorization failure!").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    AlertDialog dialog = builder.create();
+                                    progressDialog.dismiss();
+                                    dialog.show();
+                                    return;
+                                }
+
+                                String contacts = obj.get("contacts").getAsString();
+
+                                MyDBAdapter adapter = new MyDBAdapter(getBaseContext());
+                                adapter.open();
+                                adapter.truncateTable();
+                                adapter.updateTable(contacts);
+                                adapter.close();
+
+                                ContactList contactList = new ContactList(getBaseContext());
+                                ContactListFragment.myListAdapter.clear();
+                                ContactListFragment.myListAdapter.addAll(contactList);
+                                ContactListFragment.myListAdapter.notifyDataSetChanged();
+
+                                updateVersion(obj.get("version").getAsString());
+
+                                progressDialog.dismiss();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ContactListActivity.this);
+
+                                builder.setMessage("Your contacts have been successfully updated!")
+                                        .setTitle("Successfully updated..").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, "Error" + error.toString(), Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+                                AlertDialog alertDialog = new AlertDialog.Builder(ContactListActivity.this).create();
+                                alertDialog.setTitle("Error");
+                                alertDialog.setMessage("Update can not be completed. Please try again.");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+                            }
+                        }) {
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        System.out.println("####################VERSION TO BE SENT = " + version);
+                        params.put("version", version);
+                        params.put("auth", "bHCvcEhEff42EZK2");
+                        return params;
+                    }
+
+
+                };
+                // Add the request to the RequestQueue.
+                queue.getCache().clear();
+                queue.add(stringRequest);
+
+                progressDialog.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
 
+    private void updateVersion(String version) {
+
+        Log.i("UpdateVersion", "Version to store: " + version);
+        // Update version
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("version", version);
+        editor.commit();
+    }
+
+    private String readVersion() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String version = settings.getString("version", "0");
+        return version;
     }
 
     @Override
     public boolean onQueryTextSubmit(String s) {
         Log.d("Filter_Contact", "onQueryTextSubmit.. " + s);
-        ContactListFragment.myListAdapter.getFilter().filter(s.toString());
+        ContactListFragment.myListAdapter.getFilter().filter(s);
         ContactListFragment.myListAdapter.notifyDataSetChanged();
         return false;
     }
@@ -176,7 +290,7 @@ public class ContactListActivity extends ActionBarActivity
     @Override
     public boolean onQueryTextChange(String s) {
         Log.d("Filter_Contact", "onQueryTextChange.. " + s);
-        ContactListFragment.myListAdapter.getFilter().filter(s.toString());
+        ContactListFragment.myListAdapter.getFilter().filter(s);
         ContactListFragment.myListAdapter.notifyDataSetChanged();
         return false;
     }

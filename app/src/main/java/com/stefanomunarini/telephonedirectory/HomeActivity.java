@@ -12,12 +12,11 @@ import android.widget.Toast;
 
 public class HomeActivity extends ActionBarActivity {
 
-    private GCMClientManager pushClientManager;
     String PROJECT_NUMBER = "939700174543";
-
     Button directory;
     Button news;
     Button bulletin;
+    private GCMClientManager pushClientManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +26,6 @@ public class HomeActivity extends ActionBarActivity {
         directory = (Button) findViewById(R.id.home_directory);
         news = (Button) findViewById(R.id.home_news);
         bulletin = (Button) findViewById(R.id.home_bulletin);
-
-        directory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ContactListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        news.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), NewsActivity.class);
-                startActivity(intent);
-            }
-        });
 
         pushClientManager = new GCMClientManager(this, PROJECT_NUMBER);
         pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
@@ -64,8 +47,24 @@ public class HomeActivity extends ActionBarActivity {
             }
         });
 
-    }
+        directory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ContactListActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), NewsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
