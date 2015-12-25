@@ -9,11 +9,11 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.stefanomunarini.telephonedirectory.ContactListActivity">
+    tools:context="in.saurabhjinturkar.telephonedirectory.ContactListActivity">
 
     <!-- This layout is a two-pane layout for the Contacts master/detail flow. -->
     <fragment android:id="@+id/contact_list"
-        android:name="com.stefanomunarini.telephonedirectory.ContactListFragment"
+        android:name="in.saurabhjinturkar.telephonedirectory.ContactListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

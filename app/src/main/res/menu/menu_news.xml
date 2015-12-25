@@ -1,7 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.stefanomunarini.telephonedirectory.NewsActivity">
-    <item android:id="@+id/action_clear" android:title="Clear"
-        android:orderInCategory="100" app:showAsAction="never" />
+    tools:context="in.saurabhjinturkar.telephonedirectory.NewsActivity">
+    <item
+        android:id="@+id/action_clear"
+        android:orderInCategory="100"
+        android:title="Clear"
+        app:showAsAction="never" />
 </menu>

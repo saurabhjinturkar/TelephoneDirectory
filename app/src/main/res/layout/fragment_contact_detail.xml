@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.stefanomunarini.telephonedirectory.ContactDetailFragment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    tools:context="in.saurabhjinturkar.telephonedirectory.ContactDetailFragment">
 
 
     <TextView
@@ -10,60 +10,60 @@
         style="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textIsSelectable="true"
         android:autoText="false"
-        android:text="Name surname" />
+        android:padding="16dp"
+        android:text="Name surname"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/contact_number"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:layout_below="@id/contact_name_surname"
         android:autoLink="all"
         android:clickable="true"
         android:linksClickable="true"
-        android:textIsSelectable="true"
-        android:text="Contact Number" />
+        android:padding="16dp"
+        android:text="Contact Number"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/contact_emailid"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:layout_below="@id/contact_number"
         android:autoLink="all"
         android:clickable="true"
         android:linksClickable="true"
-        android:textIsSelectable="true"
-        android:text="Email ID" />
+        android:padding="16dp"
+        android:text="Email ID"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/contact_address"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:layout_below="@id/contact_emailid"
         android:autoLink="none"
         android:clickable="true"
         android:linksClickable="true"
-        android:textIsSelectable="true"
-        android:text="Address" />
+        android:padding="16dp"
+        android:text="Address"
+        android:textIsSelectable="true" />
 
     <TextView
         android:id="@+id/contact_city"
         style="?android:attr/textAppearanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:layout_below="@id/contact_address"
         android:autoLink="all"
         android:clickable="true"
         android:linksClickable="true"
-        android:textIsSelectable="true"
-        android:text="City" />
+        android:padding="16dp"
+        android:text="City"
+        android:textIsSelectable="true" />
 </RelativeLayout>

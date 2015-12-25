@@ -85,7 +85,7 @@ category#com.codepath.gcmquickstart
 ADDED from AndroidManifest.xml:29:17
 	android:name
 		ADDED from AndroidManifest.xml:29:27
-service#com.stefanomunarini.telephonedirectory.gcm.GCMMessageHandler
+service#in.saurabhjinturkar.telephonedirectory.gcm.GCMMessageHandler
 ADDED from AndroidManifest.xml:33:9
 	android:exported
 		ADDED from AndroidManifest.xml:35:13
@@ -93,7 +93,7 @@ ADDED from AndroidManifest.xml:33:9
 		ADDED from AndroidManifest.xml:34:13
 intent-filter#com.google.android.c2dm.intent.RECEIVE
 ADDED from AndroidManifest.xml:36:13
-activity#com.stefanomunarini.telephonedirectory.ContactListActivity
+activity#in.saurabhjinturkar.telephonedirectory.ContactListActivity
 ADDED from AndroidManifest.xml:49:9
 	android:label
 		ADDED from AndroidManifest.xml:51:13
@@ -105,7 +105,7 @@ ADDED from AndroidManifest.xml:52:13
 		ADDED from AndroidManifest.xml:54:17
 	android:name
 		ADDED from AndroidManifest.xml:53:17
-activity#com.stefanomunarini.telephonedirectory.ContactDetailActivity
+activity#in.saurabhjinturkar.telephonedirectory.ContactDetailActivity
 ADDED from AndroidManifest.xml:56:9
 	android:label
 		ADDED from AndroidManifest.xml:58:13
@@ -119,7 +119,7 @@ ADDED from AndroidManifest.xml:60:13
 		ADDED from AndroidManifest.xml:62:17
 	android:name
 		ADDED from AndroidManifest.xml:61:17
-activity#com.stefanomunarini.telephonedirectory.NewContact
+activity#in.saurabhjinturkar.telephonedirectory.NewContact
 ADDED from AndroidManifest.xml:64:9
 	android:label
 		ADDED from AndroidManifest.xml:66:13
@@ -129,7 +129,7 @@ ADDED from AndroidManifest.xml:64:9
 		ADDED from AndroidManifest.xml:68:13
 	android:name
 		ADDED from AndroidManifest.xml:65:13
-activity#com.stefanomunarini.telephonedirectory.HomeActivity
+activity#in.saurabhjinturkar.telephonedirectory.HomeActivity
 ADDED from AndroidManifest.xml:73:9
 	android:label
 		ADDED from AndroidManifest.xml:75:13
@@ -145,7 +145,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:79:17
 	android:name
 		ADDED from AndroidManifest.xml:79:27
-activity#com.stefanomunarini.telephonedirectory.NewsActivity
+activity#in.saurabhjinturkar.telephonedirectory.NewsActivity
 ADDED from AndroidManifest.xml:82:9
 	android:label
 		ADDED from AndroidManifest.xml:84:13
