@@ -1,15 +1,14 @@
 package in.saurabhjinturkar.telephonedirectory;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import in.saurabhjinturkar.telephonedirectory.Adapter.NewsListAdapter;
-
 import com.stefanomunarini.telephonedirectory.R;
 
+import in.saurabhjinturkar.telephonedirectory.Adapter.NewsListAdapter;
 import in.saurabhjinturkar.telephonedirectory.database.NewsDBAdapter;
 
 
@@ -56,5 +55,12 @@ public class NewsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        newsListAdapter = new NewsListAdapter(this);
+        newslist.setAdapter(newsListAdapter);
     }
 }
